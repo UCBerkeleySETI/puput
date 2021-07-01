@@ -4,23 +4,15 @@
 
 {% block title %}
     {% if search_term %}
-        {{ search_term }} | {{ blog_page.title }}
+        <title>{{ search_term }} | {{ blog_page.title }}</title>
     {% else %}
         {{ block.super }}
     {% endif %}
 {% endblock title %}
 
-{% block meta_title %}
-    {% if search_term %}
-        {% trans 'Entries for' %} {{ search_type }} {{ search_term }}
-    {% else %}
-        {{ block.super }}
-    {% endif %}
-{% endblock meta_title %}
-
 {% block meta_description %}
     {% if search_term %}
-        {% trans 'Entries for' %} {{ search_type }} {{ search_term }}
+        <meta name="description" content="{% trans 'Entries for' %} {{ search_type }} {{ search_term }}">
     {% else %}
         {{ block.super }}
     {% endif %}
