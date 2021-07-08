@@ -13,13 +13,13 @@
                     {% for month in month_list reversed %}
                         <li>
                             <a href="{% routablepageurl blog_page "entries_by_date" year.grouper month.list.0|date:"m" %}">
-                               {{ month.list.0|date:"F" }}
+                                {{ month.list.0|date:"F" }}
                             </a>
                         </li>
                     {% endfor %}
                 </ul>
             </li>
-            {% empty %}
+        {% empty %}
             {% trans 'No entry archives yet' %}
         {% endfor %}
     </ul>
