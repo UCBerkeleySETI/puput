@@ -27,9 +27,9 @@ setup(
     install_requires=[
         'Django>=2.0',
         'wagtail>=2.7,<3.0',
-        'django-el-pagination>=3.2.4',
-        'django-social-share>=1.3.0',
-        'django-colorful>=1.3'
+        'django-el-pagination==3.3.0',
+        'django-social-share==2.2.1',
+        'django-colorful==1.3'
     ],
     url='http://github.com/APSL/puput',
     author=get_metadata('puput', 'author'),

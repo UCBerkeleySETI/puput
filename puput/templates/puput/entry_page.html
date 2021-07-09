@@ -49,23 +49,25 @@
         <section>
             {{ self.body|richtext}}
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-2 me-auto">
                     <a href="{% pageurl blog_page %}" class="blog_btn back">
                         <i class="fa fa-angle-left"></i> {% trans 'Return' %}
                     </a>
                 </div>
                 {% entry_url self blog_page as post_url %}
-                <ul class="social-share-all text-right col-md-10">
-                    <li class="social-item">
-                        {% post_to_facebook post_url '<span><i class="fa fa-facebook"></i></span>' %}
-                    </li>
-                    <li class="social-item">
-                        {% post_to_twitter self.title post_url '<span><i class="fa fa-twitter"></i></span>' %}
-                    </li>
-                    <li class="social-item">
-                        {% post_to_linkendin post_url '<span><i class="fa fa-linkedin"></i></span>' %}
-                    </li>
-                </ul>
+                <div class="col-md-2">
+                    <ul class="social-share-all">
+                        <li class="social-item">
+                            {% post_to_facebook post_url '<span><i class="fa fa-facebook"></i></span>' %}
+                        </li>
+                        <li class="social-item">
+                            {% post_to_twitter self.title post_url '<span><i class="fa fa-twitter"></i></span>' %}
+                        </li>
+                        <li class="social-item">
+                            {% post_to_linkendin post_url '<span><i class="fa fa-linkedin"></i></span>' %}
+                        </li>
+                    </ul>
+                </div>
             </div>
 
         </section>
