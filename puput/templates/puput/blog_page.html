@@ -1,24 +1,22 @@
 {% extends "puput/base.html" %}
-
-{% load static i18n wagtailcore_tags wagtailimages_tags puput_tags social_share %}
+{% load static i18n wagtailcore_tags wagtailimages_tags wagtailuserbar puput_tags social_share %}
 
 {% block title %}
     {% if search_term %}
         <title>{{ search_term }} | {{ blog_page.title }}</title>
     {% else %}
-        {{ block.super }}
+        <title>{{ blog_page.title }}</title
     {% endif %}
 {% endblock title %}
 
-{% block meta_description %}
+{% block headextra %}
+    {{ block.super }}
+    <link rel="canonical" href="{% canonical_url %}">
     {% if search_term %}
         <meta name="description" content="{% trans 'Entries for' %} {{ search_type }} {{ search_term }}">
     {% else %}
-        {{ block.super }}
+        <meta name="description" content="{{ blog_page.description }}">
     {% endif %}
-{% endblock meta_description %}
-
-{% block social_share %}
     {% image blog_page.header_image fill-800x450 as share_image %}
     <meta property="og:title" content="{{ blog_page.title }}" />
     <meta property="og:description" content="{{ blog_page.description }}" />
@@ -32,18 +30,19 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ blog_page.title }}" />
     <meta name="twitter:description" content="{{ blog_page.description }}" />
-{% endblock social_share %}
+{% endblock headextra %}
 
-{% block content %}
+{% block page %}
+    {% wagtailuserbar %}
     {% with per_page=blog_page.num_entries_page %}
         {# 'paginate' tag cannot render dotted variables, so we need to create a context var #}
         {% paginate per_page entries %}
         {% if search_term %}
-            <div class="searchTerm">{% trans 'Entries for' %} {{ search_type }} "{{ search_term }}"</div>
+            <div class="search-term">{% trans 'Entries for' %} {{ search_type }} "{{ search_term }}"</div>
         {% endif %}
         {% for entry in entries %}
             {% entry_url entry blog_page as post_url %}
-            <article class="box page-content blog_grid">
+            <article class="page-content blog-grid">
                 {% include 'puput/entry_page_header.html' %}
                 <section>
                     {% if entry.header_image %}
@@ -60,8 +59,8 @@
                     {% else %}
                         {{ entry.body|richtext|truncatewords_html:70 }}
                     {% endif %}
-                    <div class="row">
-                        <ul class="social-share col-md-9">
+                    <div class="d-flex">
+                        <ul class="social-share d-inline ps-0">
                             <li class="social-item">
                                 {% post_to_facebook post_url '<span><i class="fa fa-facebook"></i></span>' %}
                             </li>
@@ -72,8 +71,8 @@
                                 {% post_to_linkendin post_url '<span><i class="fa fa-linkedin"></i></span>' %}
                             </li>
                         </ul>
-                        <div class="col-md-3">
-                            <a class="blog_btn continue" href="{{ post_url }}">{% trans 'Continue reading' %} &raquo;</a>
+                        <div class="ms-auto">
+                            <a href="{{ post_url }}">{% trans 'Continue reading' %} &raquo;</a>
                         </div>
                     </div>
                 </section>
@@ -86,4 +85,4 @@
             {% show_paginator %}
         </div>
     {% endwith %}
-{% endblock content %}
+{% endblock page %}

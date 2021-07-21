@@ -1,23 +1,18 @@
 {% extends "puput/base.html" %}
-{% load i18n wagtailcore_tags wagtailimages_tags puput_tags social_share %}
+{% load i18n wagtailcore_tags wagtailimages_tags wagtailuserbar puput_tags social_share %}
 
 {% block title %}
     <title>{{ self.title }} | {{ blog_page.title }}</title>
 {% endblock title %}
 
-{% block meta_description %}
-    {% if self.search_description %}
-        {{ self.search_description }}
-    {% else %}
-        {{ self.body|striptags|truncatewords:20 }}
-    {% endif %}
-{% endblock meta_description %}
-
-{% block canonical %}
+{% block headextra %}
+    {{ block.super }}
     <link rel="canonical" href="{% canonical_url entry=self %}">
-{% endblock canonical %}
-
-{% block social_share %}
+    {% if self.search_description %}
+        <meta name="description" content="{{ self.search_description }}">
+    {% else %}
+        <meta name="description" content="{{ self.body|striptags|truncatewords:20 }}">
+    {% endif %}
     {% image self.header_image fill-800x450 as share_image %}
     <meta property="og:title" content="{{ self.title }}" />
     <meta property="og:description" content="{% if self.excerpt %}{{ self.excerpt|striptags }}{% else %}{{ self.body|striptags|truncatewords:20 }}{% endif %}" />
@@ -31,10 +26,11 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ self.title }}" />
     <meta name="twitter:description" content="{% if self.excerpt %}{{ self.excerpt|striptags }}{% else %}{{ self.body|striptags|truncatewords:20 }}{% endif %}" />
-{% endblock social_share %}
+{% endblock headextra %}
 
-{% block content %}
-    <article class="box page-content"
+{% block page %}
+    {% wagtailuserbar %}
+    <article class="page-content"
              {% if self.id %}data-entry-page-update-comments-url="{% url 'entry_page_update_comments' self.id %}{% endif %}">
         {% include 'puput/entry_page_header.html' with entry=self %}
         <section>
@@ -48,15 +44,15 @@
         </section>
         <section>
             {{ self.body|richtext}}
-            <div class="row">
-                <div class="col-md-2 me-auto">
-                    <a href="{% pageurl blog_page %}" class="blog_btn back">
+            <div class="d-flex">
+                <div class="me-auto">
+                    <a href="{% pageurl blog_page %}">
                         <i class="fa fa-angle-left"></i> {% trans 'Return' %}
                     </a>
                 </div>
                 {% entry_url self blog_page as post_url %}
-                <div class="col-md-2">
-                    <ul class="social-share-all">
+                <div>
+                    <ul class="social-share-all mb-0">
                         <li class="social-item">
                             {% post_to_facebook post_url '<span><i class="fa fa-facebook"></i></span>' %}
                         </li>
@@ -73,10 +69,7 @@
         </section>
         {% show_comments %}
     </article>
-{% endblock content %}
-
-{% block extra_content %}
     {% if self.has_related %}
         {% include 'puput/related_entries.html' with entry=self %}
     {% endif %}
-{% endblock extra_content %}
+{% endblock page %}

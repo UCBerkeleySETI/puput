@@ -24,17 +24,6 @@ def recent_entries(context, limit=None):
     context['entries'] = entries
     return context
 
-
-@register.inclusion_tag('puput/tags/entries_list.html', takes_context=True)
-def popular_entries(context, limit=None):
-    blog_page = context['blog_page']
-    entries = blog_page.get_entries().order_by('-num_comments', '-date')
-    if limit:
-        entries = entries[:limit]
-    context['entries'] = entries
-    return context
-
-
 @register.inclusion_tag('puput/tags/tags_list.html', takes_context=True)
 def tags_list(context, limit=None, tags_qs=None):
     blog_page = context['blog_page']
