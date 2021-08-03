@@ -3,9 +3,11 @@ import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, PageChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, PageChooserPanel, StreamFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.core.fields import RichTextField
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.core import blocks
+from wagtail.core.fields import RichTextField, StreamField
 from modelcluster.contrib.taggit import ClusterTaggableManager
 
 from colorful.fields import RGBColorField
@@ -82,7 +84,11 @@ class BlogAbstract(models.Model):
 
 
 class EntryAbstract(models.Model):
-    body = RichTextField(verbose_name=_('body'))
+    body = StreamField([
+        ('heading', blocks.CharBlock(form_classname="full title")),
+        ('paragraph', blocks.RichTextBlock()),
+        ('image', ImageChooserBlock(template='puput/blocks/responsive-image.html')),
+    ])
     tags = ClusterTaggableManager(through='puput.TagEntryPage', blank=True)
     date = models.DateTimeField(verbose_name=_("Post date"), default=datetime.datetime.today)
     header_image = models.ForeignKey(
@@ -107,7 +113,7 @@ class EntryAbstract(models.Model):
             [
                 FieldPanel('title', classname="title"),
                 ImageChooserPanel('header_image'),
-                FieldPanel('body', classname="full"),
+                StreamFieldPanel('body', classname="full"),
                 FieldPanel('excerpt', classname="full"),
             ],
             heading=_("Content")

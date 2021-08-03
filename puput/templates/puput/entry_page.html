@@ -29,7 +29,6 @@
 {% endblock headextra %}
 
 {% block page %}
-    {% wagtailuserbar %}
     <article class="page-content"
              {% if self.id %}data-entry-page-update-comments-url="{% url 'entry_page_update_comments' self.id %}{% endif %}">
         {% include 'puput/entry_page_header.html' with entry=self %}
@@ -43,7 +42,8 @@
             {% include 'puput/entry_links.html' with entry=self %}
         </section>
         <section>
-            {{ self.body|richtext}}
+            {% include_block self.body %}
+            <hr>
             <div class="d-flex">
                 <div class="me-auto">
                     <a href="{% pageurl blog_page %}">
@@ -72,4 +72,5 @@
     {% if self.has_related %}
         {% include 'puput/related_entries.html' with entry=self %}
     {% endif %}
+    {% wagtailuserbar %}
 {% endblock page %}
