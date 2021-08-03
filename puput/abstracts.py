@@ -95,16 +95,13 @@ class EntryAbstract(models.Model):
         get_image_model_path(),
         verbose_name=_('Header image'),
         null=True,
-        blank=True,
         on_delete=models.SET_NULL,
         related_name='+'
     )
     categories = models.ManyToManyField('puput.Category', through='puput.CategoryEntryPage', blank=True)
     excerpt = RichTextField(
         verbose_name=_('excerpt'),
-        blank=True,
-        help_text=_("Entry excerpt to be displayed on entries list. "
-                    "If this field is not filled, a truncate version of body text will be used.")
+        help_text=_("Short excerpt from or summary of post.")
     )
     num_comments = models.IntegerField(default=0, editable=False)
 
