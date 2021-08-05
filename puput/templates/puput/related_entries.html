@@ -1,27 +1,17 @@
 {% load i18n wagtailcore_tags wagtailimages_tags puput_tags %}
 
 <div class="row">
-    <section class="features">
-        <h2 class="post_title">
-            <span>{% trans 'Related Entries' %}</span>
-        </h2>
-            <div class="row">
-                {% for related_entry in entry.related|slice:':4' %}
-                    <div class="col-md-3">
-                        <section class="box feature">
-                            <div class="image-related">
-                                {% image related_entry.header_image fill-800x240 as header_image %}
-                                <img alt="{{ related_entry.header_image.title }}" src="{{ header_image.url }}">
-                            </div>
-                            <h3>
-                                <a href="{% entry_url related_entry blog_page %}">{{ related_entry.title }}</a>
-                            </h3>
-                            <p>
-                                {{ related_entry.body|richtext|truncatewords:20 }}
-                            </p>
-                        </section>
-                    </div>
-                {% endfor %}
-            </div>
-    </section>
+    <h2>{% trans 'Related Entries' %}</h2>
+    <hr>
+    {% for related_entry in entry.related|slice:':4' %}
+        <div class="col-md-3">
+            {% image related_entry.header_image fill-1000x240 class="img-fluid" %}
+            <h3>
+                <a href="{% entry_url related_entry blog_page %}">{{ related_entry.title }}</a>
+            </h3>
+            <p>
+                {{ related_entry.excerpt|richtext|truncatewords:20 }}
+            </p>
+        </div>
+    {% endfor %}
 </div>

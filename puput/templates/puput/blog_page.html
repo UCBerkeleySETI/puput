@@ -42,25 +42,14 @@
         {% endif %}
         {% for entry in entries %}
             {% entry_url entry blog_page as post_url %}
-            <article class="page-content blog-grid">
+            <article class="page-content">
                 {% include 'puput/entry_page_header.html' %}
+                {% image entry.header_image fill-1000x240 class="img-fluid" %}
+                {% include 'puput/entry_links.html' %}
                 <section>
-                    {% if entry.header_image %}
-                        <span class="img-responsive">
-                            {% image entry.header_image fill-800x240 as header_image %}
-                            <img alt="{{ entry.header_image.title }}" src="{{ header_image.url }}">
-                        </span>
-                    {% endif %}
-                    {% include 'puput/entry_links.html' %}
-                </section>
-                <section class="article">
-                    {% if entry.excerpt %}
-                        {{ entry.excerpt|richtext }}
-                    {% else %}
-                        {{ entry.body|richtext|truncatewords_html:70 }}
-                    {% endif %}
+                    {{ entry.excerpt|richtext }}
                     <div class="d-flex">
-                        <ul class="social-share d-inline ps-0">
+                        <ul class="d-inline ps-0">
                             <li class="social-item">
                                 {% post_to_facebook post_url '<span><i class="fa fa-facebook"></i></span>' %}
                             </li>
@@ -81,7 +70,7 @@
             <span>{% trans 'No results found.' %}</span>
         {% endfor %}
 
-        <div class="pagination">
+        <div class="paginate">
             {% show_paginator %}
         </div>
     {% endwith %}
