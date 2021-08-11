@@ -5,9 +5,12 @@ from django.utils.translation import ugettext_lazy as _
 
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, PageChooserPanel, StreamFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.images.blocks import ImageChooserBlock
+
 from wagtail.core import blocks
+from wagtail.images.blocks import ImageChooserBlock
+
 from wagtail.core.fields import RichTextField, StreamField
+
 from modelcluster.contrib.taggit import ClusterTaggableManager
 
 from colorful.fields import RGBColorField
@@ -87,7 +90,13 @@ class EntryAbstract(models.Model):
     body = StreamField([
         ('heading', blocks.CharBlock(form_classname="full title")),
         ('paragraph', blocks.RichTextBlock()),
-        ('image', ImageChooserBlock(template='puput/blocks/responsive-image.html')),
+        ('image', blocks.StructBlock(
+            [
+                ('image', ImageChooserBlock()),
+                ('caption', blocks.CharBlock(required=False)),
+            ],
+            template='puput/blocks/captioned-image.html')),
+        ('embed', blocks.URLBlock(template='home/partials/embed.html')),
     ])
     tags = ClusterTaggableManager(through='puput.TagEntryPage', blank=True)
     date = models.DateTimeField(verbose_name=_("Post date"), default=datetime.datetime.today)
