@@ -95,7 +95,7 @@ class EntryAbstract(models.Model):
                 ('image', ImageChooserBlock()),
                 ('caption', blocks.CharBlock(required=False)),
             ],
-            template='puput/blocks/captioned-image.html')),
+            template='puput/blocks/captioned_image.html')),
         ('embed', blocks.URLBlock(template='home/partials/embed.html')),
     ])
     tags = ClusterTaggableManager(through='puput.TagEntryPage', blank=True)
