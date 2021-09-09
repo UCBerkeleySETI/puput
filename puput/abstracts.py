@@ -88,7 +88,7 @@ class BlogAbstract(models.Model):
 
 class EntryAbstract(models.Model):
     body = StreamField([
-        ('heading', blocks.CharBlock(form_classname="full title")),
+        ('heading', blocks.CharBlock(form_classname='full title', template='puput/blocks/heading.html')),
         ('paragraph', blocks.RichTextBlock()),
         ('image', blocks.StructBlock(
             [
