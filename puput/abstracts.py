@@ -2,6 +2,8 @@ import datetime
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.forms.utils import flatatt
+from django.utils.html import format_html, format_html_join
 
 from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel, InlinePanel, PageChooserPanel, StreamFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -10,6 +12,8 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 from wagtail.core.fields import RichTextField, StreamField
+
+from wagtailmedia.blocks import VideoChooserBlock
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 
@@ -85,11 +89,29 @@ class BlogAbstract(models.Model):
     class Meta:
         abstract = True
 
+class AnimationBlock(VideoChooserBlock):
+
+    def render_basic(self, value, context=None):
+        if not value:
+            return ''
+
+        tmpl = '''
+        <video width="100%" autoplay muted="true" loop="true">
+            {0}
+            Your browser does not support the video element.
+        </video>
+        '''
+
+        return format_html(tmpl, format_html_join(
+            '\n', '<source{0}>',
+            [[flatatt(s) for s in value.sources]]
+        ))
 
 class EntryAbstract(models.Model):
     body = StreamField([
         ('heading', blocks.CharBlock(form_classname='full title', template='puput/blocks/heading.html')),
         ('paragraph', blocks.RichTextBlock()),
+        ('animation', AnimationBlock(icon='media')),
         ('image', blocks.StructBlock(
             [
                 ('image', ImageChooserBlock()),
