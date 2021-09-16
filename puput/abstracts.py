@@ -13,6 +13,7 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from wagtail.core.fields import RichTextField, StreamField
 
+from wagtail.contrib.table_block.blocks import TableBlock
 from wagtailmedia.blocks import VideoChooserBlock
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -112,6 +113,7 @@ class EntryAbstract(models.Model):
         ('heading', blocks.CharBlock(form_classname='full title', template='puput/blocks/heading.html')),
         ('paragraph', blocks.RichTextBlock()),
         ('animation', AnimationBlock(icon='media')),
+        ('table', TableBlock(template='puput/blocks/table.html')),
         ('image', blocks.StructBlock(
             [
                 ('image', ImageChooserBlock()),
