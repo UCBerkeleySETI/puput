@@ -26,8 +26,8 @@ setup(
     long_description=codecs.open(os.path.join(os.path.dirname(__file__), 'README.rst'), encoding='utf-8').read(),
     install_requires=[
         'Django>=2.0',
-        'wagtail>=2.7,<3.0',
-        'django-el-pagination==3.3.0',
+        'wagtail>=2.7',
+        'django-el-pagination==4.0.0',
         'django-social-share==2.2.1',
         'django-colorful==1.3'
     ],
